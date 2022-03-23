@@ -10,7 +10,10 @@ const app = express();
 app.set('view engine', 'ejs');
 
 //ubicacion vistas
-app.set('views', path.join(__dirname,'./views'));
+app.set('views', path.join(__dirname, './views'));
+
+//archivos estaticos
+app.use(express.static('public'));
 
 //routing
 app.use('/', router());
