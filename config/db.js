@@ -11,10 +11,17 @@ module.exports = new Sequelize(
   host: process.env.BD_HOST,
   dialect: 'postgres',
   port: process.env.BD_PORT,
+  // operatorAliases : false,
+  //eliminar los createdAt, and updatedAt
+  // define: {
+  //     timestamps: false
+  // },
   pool: {
       max:5,
       min: 0,
       acquire: 30000,
       idle:10000
-  }
+  },
+  //deja de mostrar por consola lo que se ejcuta en la bd
+  // logging: false,
 });
