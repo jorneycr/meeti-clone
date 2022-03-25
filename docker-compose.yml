@@ -1,13 +1,13 @@
 version: '2'
 services:
-postgres:
-  image: 'postgres'
-  restart: always
-  volumes:
-    - './postgres_data:/var/lib/postgresql/data'
-  environment:
-    - POSTGRES_DB=meeti
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres
-  ports:
-    - '5432:5432'
+  postgres:
+    image: 'postgres'
+    restart: always
+    volumes:
+      - './postgres_data:/var/lib/postgresql/data'
+    environment:
+      - POSTGRES_DB=meeti
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
