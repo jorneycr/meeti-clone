@@ -10,6 +10,11 @@ exports.crearNuevaCuenta = async (req, res)  => {
     const usuario = req.body;
     const nuevoUsuario  = await Usuarios.create(usuario);
 
-    //TODO : Flash Message y redireccionar
+    try {
+        //TODO : Flash Message y redireccionar
     console.log(nuevoUsuario);
+    } catch (error) {
+        console.log(error);
+    }
+    
 }
