@@ -14,7 +14,7 @@ exports.crearNuevaCuenta = async (req, res)  => {
         //TODO : Flash Message y redireccionar
     console.log(nuevoUsuario);
     } catch (error) {
-        console.log(error);
+        console.log(error.errors);
     }
     
 }
