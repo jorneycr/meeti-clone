@@ -2,7 +2,7 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
+// const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // ***Agregamos express validator a toda la aplicación
-app.use(expressValidator());
+// app.use(expressValidator());
 
 //habilitar EJS como template engine
 app.use(expressLayouts)

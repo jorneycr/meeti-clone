@@ -64,13 +64,13 @@ module.exports = function () {
     //     busquedaControllerFE.resultadosBusqueda
     // )
 
-    // /** Crear y confirmar cuentas */
+    /** Crear y confirmar cuentas */
     router.get('/crear-cuenta', usuariosController.formCrearCuenta);
     router.post('/crear-cuenta', usuariosController.crearNuevaCuenta);
     // router.get('/confirmar-cuenta/:correo', usuariosController.confirmarCuenta);
 
-    // // Iniciar sesion
-    // router.get('/iniciar-sesion', usuariosController.formIniciarSesion);
+    // Iniciar sesion
+    router.get('/iniciar-sesion', usuariosController.formIniciarSesion);
     // router.post('/iniciar-sesion', authController.autenticarUsuario);
 
     // // cerrar sesion

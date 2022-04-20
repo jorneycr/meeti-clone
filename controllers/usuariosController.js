@@ -1,4 +1,7 @@
 const Usuarios = require('../models/Usuarios');
+const enviarEmail = require('../handlers/emails');
+const { body, validationResult } = require('express-validator');
+
 
 exports.formCrearCuenta = (req, res) => {
     res.render('crear-cuenta', {
@@ -9,42 +12,54 @@ exports.formCrearCuenta = (req, res) => {
 exports.crearNuevaCuenta = async (req, res) => {
     const usuario = req.body;
 
-    req.checkBody('confirmar', 'El password confirmado no puede ir vacio' ).notEmpty();
-    req.checkBody('confirmar', 'El password es diferente').equals(req.body.password);
+    const rules = [
+        body('nombre').escape(),
+        body('confirmar').not().isEmpty().withMessage('Repetir el password es obligatorio').escape(),
+        body('confirmar').equals( req.body.password ).withMessage('Las contraseñas son diferentes')
+    ];
+ 
+    await Promise.all(rules.map( validation => validation.run(req)));
+    const errores = validationResult(req);
 
     // Leer los errores de express
-    const erroresExpress = req.validationErrors();
+    // const erroresExpress = req.validationErrors();
 
     try {
         await Usuarios.create(usuario);
 
-        // // Url de confirmación
-        // const url = `http://${req.headers.host}/confirmar-cuenta/${usuario.email}`;
+        // Url de confirmación
+        const url = `http://${req.headers.host}/confirmar-cuenta/${usuario.email}`;
 
         // // Enviar email de confirmación
-        // await enviarEmail.enviarEmail({
-        //     usuario,
-        //     url, 
-        //     subject : 'Confirma tu cuenta de Meeti',
-        //     archivo : 'confirmar-cuenta'
-        // });
+        await enviarEmail.enviarEmail({
+            usuario,
+            url,
+            subject: 'Confirma tu cuenta de Meeti',
+            archivo: 'confirmar-cuenta'
+        });
 
-        // //Flash Message y redireccionar
-        // req.flash('exito', 'Hemos enviado un E-mail, confirma tu cuenta');
-        // res.redirect('/iniciar-sesion');
+        //Flash Message y redireccionar
+        req.flash('exito', 'Hemos enviado un E-mail, confirma tu cuenta');
+        res.redirect('/iniciar-sesion');
     } catch (error) {
-        
-        // extraer el message de los errores
-        const erroresSequelize = error.errors.map(err => err.message);
-        
-        // extraer unicamente el msg de los errores
-        const errExp = [erroresExpress[0].msg];
 
-        //unirlos
-        const listaErrores = [...erroresSequelize, ...errExp];
+        if (error.parent && error.parent.code === '23505') {
+            req.flash('error', 'El Usuario ya existe');
+        } else {
+            const erroresSequelize = error.errors.map(err => err.message);
+            const validatorErrors = errores.errors.map(err => err.msg);
 
-        req.flash('error', listaErrores);
+            const erroresGenerales = [...validatorErrors, ...erroresSequelize];
+
+            req.flash('error', erroresGenerales);
+        }
         res.redirect('/crear-cuenta');
     }
 
+}
+
+exports.formIniciarSesion = (req, res) => {
+    res.render('iniciar-sesion', {
+        nombrePagina: 'Iniciar Sesion'
+    })
 }
