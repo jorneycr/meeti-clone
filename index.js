@@ -11,7 +11,9 @@ const router = require('./routes');
 //configuracion y modelos BD
 const db = require('./config/db');
 require('./models/Usuarios');
-db.sync().then(() => console.log('DB conectada')).catch((error) => console.log(error));
+db.sync()
+    .then(() => console.log('Conectado al Servidor'))
+    .catch(error => console.log(error))
 
 //variables de desarrollo
 require('dotenv').config({ path: 'variables.env' });
