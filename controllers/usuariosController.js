@@ -10,7 +10,6 @@ exports.formCrearCuenta = (req, res) => {
 
 exports.crearNuevaCuenta = async (req, res) => {
     const usuario = req.body;
-    const nuevoUsuario = await Usuarios.create(usuario);
 
     req.checkBody('confirmar', 'El password confirmado no puede ir vacio').notEmpty();
     req.checkBody('confirmar', 'El password es diferente').equals(req.body.password);
@@ -19,13 +18,34 @@ exports.crearNuevaCuenta = async (req, res) => {
     const erroresExpress = req.validationErrors();
 
     try {
-        //TODO : Flash Message y redireccionar
-        console.log(nuevoUsuario);
-    } catch (error) {
-        const erroresSequelize = error.errors.map(err => err.message);
-        console.log(erroresSequelize);
+        // await Usuarios.create(usuario);
 
-        req.flash('error', erroresSequelize);
+        // Url de confirmación
+        // const url = `http://${req.headers.host}/confirmar-cuenta/${usuario.email}`;
+
+        // Enviar email de confirmación
+        // await enviarEmail.enviarEmail({
+        //     usuario,
+        //     url,
+        //     subject: 'Confirma tu cuenta de Meeti',
+        //     archivo: 'confirmar-cuenta'
+        // });
+
+        // //Flash Message y redireccionar
+        // req.flash('exito', 'Hemos enviado un E-mail, confirma tu cuenta');
+        // res.redirect('/iniciar-sesion');
+    } catch (error) {
+        console.log(error);
+        // extraer el message de los errores
+        const erroresSequelize = error.errors.map(err => err.message);
+
+        // extraer unicamente el msg de los errores
+        const errExp = erroresExpress.map(err => err.msg);
+
+        //unirlos
+        const listaErrores = [...erroresSequelize, ...errExp];
+
+        req.flash('error', listaErrores);
         res.redirect('/crear-cuenta');
     }
 
