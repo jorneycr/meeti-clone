@@ -49,7 +49,7 @@ app.use(session({
     saveUninitialized: false
 }))
 
-//agrega flash messages
+// Agrega flash messages
 app.use(flash());
 
 //middleware (usuario logueado,  flash messages, fecha actual)
