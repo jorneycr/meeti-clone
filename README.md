@@ -1,13 +1,14 @@
 ### Meeti Clone
 
+## This project was building on React.
+
 ## Run Project
 
-```bash
+bash
 $ npm start
-```
+
 
 ## Docker
 
-```bash
+bash
 $ docker-compose up -d
-```
