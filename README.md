@@ -4,11 +4,11 @@
 
 ## Run Project
 
-bash
-$ npm start
+
+# ` npm start`
 
 
 ## Docker
 
-bash
-$ docker-compose up -d
+
+# ` docker-compose up -d `
